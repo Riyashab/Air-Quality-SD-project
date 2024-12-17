@@ -41,4 +41,17 @@ This project creates a **visual analytics tool** to analyze, monitor, and foreca
 |-------------|------------|---------------|
 | ![PM2.5 vs OZ](visualization/pm%202.5%20vs%20OZ.png) | ![PM2.5 vs SD](visualization/pm%202.5%20vs%20SD.png) | ![Overall PM2.5](visualization/pm%202.5.png) |
 
+## Correlation Heatmap of Pollutants
+
+The heatmap below illustrates the correlation between various pollutants.
+
+![Correlation Heatmap](visualization/correlation%20heatmap%20pollutant.png)
+
+## Death by Factor
+
+This visualization represents the impact of various factors on death rates.
+
+![Death by Factor](visualization/death%20by%20factor.png)
+
+
 
