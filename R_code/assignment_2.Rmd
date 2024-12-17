@@ -1,0 +1,218 @@
+---
+title: "Assignment 2"
+output: html_notebook
+---
+
+# Air Quality
+
+Air pollution is one of the world's largest health and environmental challenges. Air pollution expands in two contexts: indoor (household) air pollution and outdoor air pollution.
+
+Air pollution is often defined as the combination of outdoor and indoor particulate matter and ozone. It is a risk factor for many of the leading causes of death, including heart disease, stroke, lower respiratory infections, lung cancer, diabetes, and chronic obstructive pulmonary disease (COPD) *(Ritchie and Roser 2019)*.
+
+![From <https://ourworldindata.org/air-pollution>](images/ourworldindata_air_pollution_overview.png)
+
+Unfortunately, over half of the world's population lives without the protection of adequate air quality standards.
+
+Here at home, the air quality outdoors has gotten better since the 1990s, but there are still numerous challenges in safeguarding Americans from air quality issues.
+
+The U.S. Environmental Protection Agency (EPA) regulates six pollutants as “criteria” air pollutants using human health-based and environmentally-based criteria.
+
+-   ground-level ozone (OZ)
+
+-   particle pollution (PM2.5 and PM10)
+
+-   carbon monoxide (CM)
+
+-   lead total suspended particulate (TSP)
+
+-   nitrogen oxides (NO2)
+
+-   sulfur dioxide (SD)
+
+### PM2.5 the invisible killer
+
+Among all air pollutants, PM2.5 kills the most people worldwide. It consists of particles smaller than 2.5 microns — small enough that billions of PM2.5 can fit inside a single red blood cell. PM2.5 is responsible for an estimated 4.2 million premature deaths every year globally. This includes over a million deaths in China, over half a million in India, almost 200,000 in Europe, and over 50,000 in the United States *(McGill University 2021)*.
+
+### Analytics to the rescue
+
+Like any other data-driven decision making problem, we can tackle the challenges of air quality using advanced analytics. Business analytics can provide practical insights and aid in the decision-making of strategic decisions concerning air quality and its corresponding health-related issues.
+
+To do so, we intend to create a complete visual analytics tool to analyze, monitor, and forecast air quality for San Diego County.
+
+## Assignment 2 — A more refined overview of our data
+
+In Assignment 1, we familiarized ourselves with some of the data features and identified some issues we must be aware of, such as the NA values and the inability to directly use the `TSP` variable for the analysis of `PM2.5`. In more detail, we looked at the relationship between each variable and `PM2.5` and found a positive relationship (with varying degrees) between all pollutants.
+
+### Description
+
+In this assignment, we plan to use more advanced visualizations to conduct a more granular analysis.
+
+Hereafter, all the assignment descriptions are written in the [**bold font and colored dark orange**]{style="color: darkorange;"}. Read the descriptions carefully, and complete this notebook. Once you are done with the notebook and completed the check boxes at the end, save all your files and the project and *zip/compress* your entire R Studio project (the folder with the *Assignment 2.Rproj*, *assignment_2.Rmd*, and the subfolders of *data* and *images*) and submit your assignment on Canvas.
+
+### Libraries and initial settings
+
+[**Include all the required libraries. Be sure to include a brief comment on the purpose of the included library similar to the example below for `tidyverse`. DO NOT include a library that you are not using in the notebook.**]{style="color: darkorange;"}
+
+```{r}
+library(tidyverse)  # A set of packages for data transformation and visualization
+
+library(here) # Easily manage file path in the project
+
+library(viridis)    # For color palette
+
+library(ggcorrplot) # For creating correlation matrix
+
+```
+
+### Loading your data
+
+[**Assign your first name to the object `first_name` and use your nine digit [student id]{.underline} as your `unique_identifier`.**]{style="color: darkorange;"}
+
+```{r}
+first_name <- 'Riyasha'
+unique_identifier <- '200638768'
+```
+
+[**After modifying your `first_name` and `unique_identifier` above, DO NOT change the code in the chunk below. If you have accidentally changed this content, go back to the assignment page on Canvas to re-download the file and access your personalized data correctly.**]{style="color: darkorange;"}
+
+```{r}
+# after setting your identifier in the above line, do not change/edit the next six lines
+set.seed(unique_identifier)
+
+eval({
+  call("<-",
+       as.name(as.name(paste0('aq_data_', first_name))),
+       read_csv(here('data','air_quality_data.csv')) %>%
+         mutate(date = as.Date(date, "%m/%d/%y")) %>% 
+         filter(date < as.Date(max(date)) - round(runif(1, 50, 149),0)))
+})
+```
+
+[**Past this point, you can access the underlying data you need using the object `aq_data_<your_first_name>`.For example, I (Majid) can access my data by using the name `aq_data_majid`. The rest of this instruction uses this name, but you should be working with your own data `aq_data_<your_first_name>`.**]{style="color: darkorange;"}
+
+#### Question 1: Correlation heatmap/matrix
+
+-   [**Firstly, we should summarize our correlation analysis from Assignment 1. The best approach to display (linear) correlation between multiple variables is to create a correlation heatmap (also called correlation matrix). Correlation heatmaps are heatmaps with the set of variables we analyze on the x and y-axis, and the heatmap values are the correlation between the row-column pair.**]{style="color: darkorange;"}
+
+-   [**Write a code to create a correlation heatmap between the six pollutants of `CM`, `SD`, `NO2`, `OZ`, `PM10`, and `PM2.5`. Your visualization must:**]{style="color: darkorange;"}
+
+    -   [**Include proper axis labels, title, legend title, and source (remember we get our air pollution data from the `RAQSAPI` package — A Simple Interface to the US EPA Air Quality System Data Mart API).**]{style="color: darkorange;"}
+
+    -   [**The coloring scale should be set to a color palette from the `viridis` package.**]{style="color: darkorange;"}
+
+#selecting the interested pollutants (excluding TSP)
+
+```{r}
+pollutants <- aq_data_Riyasha %>%
+  select(CM,SD, NO2, OZ, PM10, PM2.5)
+```
+
+#calculating the correlation matrix and ignore rows with missing values
+
+```{r}
+cor_matrix <- cor(na.omit(pollutants))
+```
+
+#creating the correlation heat map
+
+```{r}
+p <- ggcorrplot(cor_matrix, 
+                lab = TRUE,  
+                colors = viridis(5),  
+                title = "Correlation Heatmap of Pollutants",
+                legend.title = "Correlation") +
+                labs(x = "Pollutants",
+                     y = "Pollutants",  
+    caption = "Source: RAQSAPI package — US EPA Air Quality System Data Mart API")  
+p
+```
+
+-   [**What can you conclude from this correlation heatmap? Write a brief sentence or two to elaborate.**]{style="color: darkorange;"}
+-   The correlation heat map shows that PM2.5 and PM10 have a strong positive correlation (0.87) which means that they increase or decrease together. We can also see that OZ has a weaker correlation with NO2 (-0.63) and SD(-0.02). Overall, we can say that some pollutants seem to be strongly linked, while others are not.
+
+#### Question 2: Safe levels of `PM2.5`
+
+-   [**According to the World Health Organization (WHO), the recommended level of PPM2.5 (based on 2021 air quality guidelines) is 15 micrograms per cubic meter. Write an R code to create a chart with the following specifications:**]{style="color: darkorange;"}
+
+    -   [**A column chart with the date on the x-axis and a new column labeled "PM2.5 Baseline" on the y-axis. This new variable is simply defined as the PM2.5 level minus 15 (the WHO recommended level).**]{style="color: darkorange;"}
+
+    -   [**The columns of the column chart should be colored (filled) appropriately (e.g., `darkolivegreen` and `firebrick`) to indicate safe and unsafe levels.**]{style="color: darkorange;"}
+
+    -   [**Your chart should be faceted based on different sites, as the PM2.5 measurements differ per site. If a particular site does not include any PM2.5 measurements, it should not appear in your final chart.**]{style="color: darkorange;"}
+
+    -   [**Your chart should include proper axis labels, title, legend title, and source (remember we get our air pollution data from the `RAQSAPI` package — A Simple Interface to the US EPA Air Quality System Data Mart API).**]{style="color: darkorange;"}
+
+#creating a new column called PM 2.5_Baseline and removing rows where PM 2.5 is missing also creating a column for the levels
+
+```{r}
+  
+aq_data_Riyasha <- aq_data_Riyasha %>%
+  filter(!is.na(`PM2.5`)) %>%
+  mutate(PM2.5_Baseline = `PM2.5` - 15,
+         Level = ifelse(`PM2.5_Baseline` <= 0, "Safe", "Unsafe"))
+```
+
+#creating the column chart using the new column created and facet
+
+```{r}
+p <- ggplot(aq_data_Riyasha, aes(x = date, y = `PM2.5_Baseline`, fill = Level)) +
+  
+geom_col() +
+  
+scale_fill_manual(values = c("Safe" = "darkolivegreen", "Unsafe" = "firebrick"))+
+  
+labs(title = "Safe and Unsafe PM2.5 Levels by Site",
+       x = "Date", 
+       y = "PM2.5 Baseline", 
+       fill = "Level", 
+       caption = "Source:RAQSAPI package — US EPA Air Quality System Data Mart API") +
+      facet_wrap(~ site_number)
+
+p
+```
+
+-   [**What can you conclude from this chart? Are there any particular site or time of the year that should be highlighted? Write a brief sentence or two to elaborate.**]{style="color: darkorange;"}
+
+-   From the chart we can say that around April there tends to be higher occurrence of unsafe air. This tells us that the air quality is bad around April for sits like 1026, 1022 and 1026. We can also see that site 1014 has the most red bars compared to the other sites which suggests that the air quality is poor throughout the year for this site.
+
+## References
+
+[**Last but not least, in addition to the references below, include any references you used.**]{style="color: darkorange;"}
+
+-   Ritchie, H., & Roser, M. (2019). Outdoor air pollution. *Our world in data*., <https://ourworldindata.org/air-pollution>
+
+-   McGill University (2021) Air pollution: The silent killer called PM2.5. *Phys dot Org*, <https://phys.org/news/2021-03-air-pollution-silent-killer-pm25.html>
+
+-   RAQSAPI: A Simple Interface to the US EPA Air Quality System Data Mart API <https://cran.r-project.org/web/packages/RAQSAPI/index.html>
+
+-   WHO (2021). What are the WHO Air quality guidelines? <https://www.who.int/news-room/feature-stories/detail/what-are-the-who-air-quality-guidelines>
+
+When searching for "How to find correlation matrix in R" - Statology. (n.d.). Correlation matrix in R. Statology. <https://www.statology.org/correlation-matrix-in-r/>
+
+-   When searching for "how to ignore missing values in r for correlation matrix" Stack Overflow. (2011). Dealing with missing values for correlations calculation. <https://stackoverflow.com/questions/7445639/dealing-with-missing-values-for-correlations-calculation>
+
+-   When prompted "how to filter and remove rows with missing values in R" the chatgpt generated text gave me the following options "Remove rows with missing values in column clean_df \<- df %\>% filter(!is.na(A)) OpenAI. (2024). ChatGPT [Large language model]. <https://chat.openai.com/chat>
+
+-   when prompted with "why is my geom_col(fill=) showing different color than my graphs" the chatgpt gave me the text Using scale_fill_manual() OpenAI. (2024). ChatGPT [Large language model]. <https://chat.openai.com/chat>
+
+## Check list
+
+-   [- ] Did you include your student id (in the `unique_identifier`) and first name (in the `first_name`) to access and use your personalized data throughout the assignment?
+-   [ ] Did you answered all the questions and included the required commentary on the corresponding questions?
+-   [ ] Do all the code chunks in your file run without any errors.
+-   [ ] Do all the code chunks in your file run if your project is opened on another location or another computer. (*Hint:* did you incorporate the package `here`?)
+-   [ ] Did you include all the references to forums, prompts, or other sources you may have used?
+
+## Rubrics
+
+Here is how your assignment is graded:
+
+| Criteria                                                                                   | Grading/penalty                                     |
+|---------------------------------------------|---------------------------|
+| Assignment set-up (libraries, first_name, unique_identifier, personalized data)            | If done [**incorrectly**]{.underline}, 25% penalty. |
+| All the code chunks run when the project is opened on another location or another computer | 10%                                                 |
+| Question 1                                                                                 | 30%                                                 |
+| Question 2                                                                                 | 55%                                                 |
+| Complete references                                                                        | 5%                                                  |
+
+: Assignment 2 Rubric
