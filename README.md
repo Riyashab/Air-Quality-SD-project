@@ -35,7 +35,7 @@ This project creates a **visual analytics tool** to analyze, monitor, and foreca
 
 | PM2.5 vs PM10 | PM2.5 vs CM | PM2.5 vs NO2 |
 |---------------|------------|-------------|
-| ![PM2.5 vs PM10]![PM2.5 vs PM10](visualizations/pm2.5_vs_pm10.png) | ![PM2.5 vs CM](visualization/om%202.5%20vs%20cm.png) | ![PM2.5 vs NO2](visualization/pm%202.5%20vs%20NO2.png) |
+| ![PM2.5 vs PM10](visualization/pm2.5_vs_pm10.png) | ![PM2.5 vs CM](visualization/om%202.5%20vs%20cm.png) | ![PM2.5 vs NO2](visualization/pm%202.5%20vs%20NO2.png) |
 
 | PM2.5 vs OZ | PM2.5 vs SD | Overall PM2.5 |
 |-------------|------------|---------------|
