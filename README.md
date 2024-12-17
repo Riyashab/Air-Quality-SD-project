@@ -48,6 +48,11 @@ This project creates a **visual analytics tool** to analyze, monitor, and foreca
   <img src="visualization/pm25_vs_safeunsafe.png" alt="Safe and Unsafe PM2.5" width="50%"/>
 </p>
 
+## PM2.5 Analysis Map - January
+
+The map below shows the average PM2.5 levels in San Diego County for the month of January.
+
+![PM2.5 Levels in January](visualization/Jan_pm2_5.png)
 
 
 
