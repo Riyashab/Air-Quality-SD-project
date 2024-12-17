@@ -28,4 +28,25 @@ This project creates a **visual analytics tool** to analyze, monitor, and foreca
 - `data/`: Contains air quality datasets.  
 - `scripts/`: R scripts and notebooks for analysis.  
 - `images/`: Visualizations and images used in documentation.  
-- `assignment1_notebook.Rmd`: Main RMarkdown file for Assignment 1.  
+- `assignment1_notebook.Rmd`: Main RMarkdown file for Assignment 1.
+
+  ## PM2.5 Visualizations
+
+### PM2.5 vs PM10
+![PM2.5 vs PM10](pm2.5%20vs%20pm%2010.png)
+
+### PM2.5 vs CM
+![PM2.5 vs CM](om%202.5%20vs%20cm.png)
+
+### PM2.5 vs NO2
+![PM2.5 vs NO2](pm%202.5%20vs%20NO2.png)
+
+### PM2.5 vs OZ
+![PM2.5 vs OZ](pm%202.5%20vs%20OZ.png)
+
+### PM2.5 vs SD
+![PM2.5 vs SD](pm%202.5%20vs%20SD.png)
+
+### Overall PM2.5 Visualization
+![PM2.5 Overview](pm%202.5.png)
+
