@@ -1,7 +1,4 @@
----
-title: "Assignment 1"
-output: html_notebook
----
+
 
 ## Air Quality
 
@@ -41,15 +38,8 @@ To do so, in this and the next three assignments, we intend to create a complete
 
 ## Assignment 1 — Getting to know the air quality data
 
-### Description
-
-The main goal of this assignment is to put what you learned in the first three weeks of the class into work! In particular, you will load your personalized data (more on that in the [***Loading your data***]{.underline} section) and inspect some quick facts about it. We then quickly jump in to the variable of interest PM2.5 and study the relationship between other pollutants and the PM2.5.
-
-Hereafter, all the assignment descriptions are written in the [**bold font and colored dark orange**]{style="color: darkorange;"}. Read the descriptions carefully, and complete this notebook. Once you are done with the notebook and completed the check boxes at the end, save your `RMarkdown` notebook and submit it on the assignment container on Canvas.
 
 ### Libraries and initial settings
-
-[**Include all the required libraries. Be sure to include a brief comment on the purpose of the included library similar to the example below for `tidyverse`. DO NOT include a library that you are not using in the notebook.**]{style="color: darkorange;"}
 
 ```{r}
 library(tidyverse)      # a set of packages for data transformation and visualization
@@ -66,40 +56,7 @@ install.packages("here")
 first_name <- 'riyasha'
 ```
 
-### Loading your data
-
-[**The data you'll be using is a subset of the general data in `data/air_quality_data.csv` data. To access your randomized subset, use your nine digit [student id]{.underline} as your `unique_identifier`.**]{style="color: darkorange;"}
-
-[**Below is an example of a made-up id, that you can change (by changing the `unique_identifier` to access your own data.**]{style="color: darkorange;"}
-
-```{r}
-unique_identifier <- '200638768'
-```
-
-[**After modifying your `unique_identifier` above, DO NOT change the code in the chunk below. If you have accidentally changed this content, go back to the assignment page on Canvas to re-download the file and access your personalized data correctly.**]{style="color: darkorange;"}
-
-```{r}
-# after setting your identifier in the above line, do not change/edit the next six lines
-set.seed(unique_identifier)
-
-eval({
-  call("<-",
-       as.name(as.name(paste0('aq_data_', first_name))),
-       read_csv(here('data','air_quality_data.csv')) %>%
-         mutate(date = as.Date(date, "%m/%d/%y")) %>% 
-         filter(date < as.Date(max(date)) - round(runif(1, 50, 149),0)))
-})
-```
-
-### Exploring San Diego air quality data
-
-[**Past this point, you can access the underlying data you need using the object `aq_data_<your_first_name>`.For example, I (Majid) can access my data by using the name `aq_data_majid`. The rest of this instruction uses this name, but you should be working with your own data `aq_data_<your_first_name>`.**]{style="color: darkorange;"}
-
-[**To explore the San Diego air quality data, we first need some statistical summaries.**]{style="color: darkorange;"}
-
 #### Question 1: Counting the `NA` values
-
--   [**Your data set includes nine columns, and there are missing data, which are marked by `NA`. Write a code that displays how many `NA`s are in each column.**]{style="color: darkorange;"}
 
 ```{r}
 # Count NA values in each column of aq_data_riyasha
@@ -242,43 +199,4 @@ P <- P + geom_point() + geom_smooth(method = "lm") +
 print(P)
 ```
 
-## References
 
-[**Last but not least, in addition to the references below, include any references you used.**]{style="color: darkorange;"}
-
--   Ritchie, H., & Roser, M. (2019). Outdoor air pollution. *Our world in data*., <https://ourworldindata.org/air-pollution>
-
--   McGill University (2021) Air pollution: The silent killer called PM2.5. *Phys dot Org*, <https://phys.org/news/2021-03-air-pollution-silent-killer-pm25.html>
-
--   Bobbitt, Zach. “R: Count Number of NA Values in Each Column.” *Statology*, 15 Nov. 2022, www.statology.org/r-count-na-in-each-column/. Accessed 12 Sept. 2024.
-
--   When prompted with “Why is my plot not being generated in R” the ChatGPT-generated text indicated "For `ggplot2` plots, you can use `print()` explicitly if you're not in an interactive environment"
-
-    `library(ggplot2) p <- ggplot(data, aes(x, y)) + geom_point() print(p)`
-
-    **(OpenAI, 2023)**.**OpenAI. (2025). *ChatGPT*. [Large language model]. <https://chat.openai.com/chat>**
-
--   Bobbitt, Zach. “How to Calculate Standard Deviation of Columns in R.” *Statology*, 12 Aug. 2021, www.statology.org/standard-deviation-of-columns-in-r/. Accessed 12 Sept. 2024.
-
-## Check list
-
--   [x] Did you include your student id (in the `unique_identifier`) and first name (in the `first_name`) to access and use your personalized data throughout the assignment?
--   [x] Did you answered all the questions and included the required commentary on the corresponding questions?
--   [x] Do all the code chunks in your file run without any errors.
--   [x] Do all the code chunks in your file run if your project is opened on another location or another computer. (*Hint:* did you incorporate the package `here`?)
--   [x] Did you include all the references to forums, prompts, or other sources you may have used?
-
-## Rubrics
-
-Here is how your assignment is graded:
-
-| Criteria                                                                                   | Grading/penalty                                     |
-|---------------------------------------------|---------------------------|
-| Assignment set-up (libraries, first_name, unique_identifier, personalized data)            | If done [**incorrectly**]{.underline}, 25% penalty. |
-| All the code chunks run when the project is opened on another location or another computer | 10%                                                 |
-| Question 1                                                                                 | 10%                                                 |
-| Question 2                                                                                 | 15%                                                 |
-| Question 3                                                                                 | 60%                                                 |
-| Complete references                                                                        | 5%                                                  |
-
-: Assignment 1 Rubric
