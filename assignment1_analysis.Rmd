@@ -1,0 +1,284 @@
+---
+title: "Assignment 1"
+output: html_notebook
+---
+
+## Air Quality
+
+Air pollution is one of the world's largest health and environmental challenges. Air pollution expands in two contexts: indoor (household) air pollution and outdoor air pollution.
+
+Air pollution is often defined as the combination of outdoor and indoor particulate matter and ozone. It is a risk factor for many of the leading causes of death, including heart disease, stroke, lower respiratory infections, lung cancer, diabetes, and chronic obstructive pulmonary disease (COPD) *(Ritchie and Roser 2019)*.
+
+![From <https://ourworldindata.org/air-pollution>](images/ourworldindata_air_pollution_overview.png)
+
+Unfortunately, over half of the world's population lives without the protection of adequate air quality standards.
+
+Here at home, the air quality outdoors has gotten better since the 1990s, but there are still numerous challenges in safeguarding Americans from air quality issues.
+
+The U.S. Environmental Protection Agency (EPA) regulates six pollutants as “criteria” air pollutants using human health-based and environmentally-based criteria.
+
+-   ground-level ozone (OZ)
+
+-   particle pollution (PM2.5 and PM10)
+
+-   carbon monoxide (CM)
+
+-   lead total suspended particulate (TSP)
+
+-   nitrogen oxides (NO2)
+
+-   sulfur dioxide (SD)
+
+### PM2.5 the invisible killer
+
+Among all air pollutants, PM2.5 kills the most people worldwide. It consists of particles smaller than 2.5 microns — small enough that billions of PM2.5 can fit inside a single red blood cell. PM2.5 is responsible for an estimated 4.2 million premature deaths every year globally. This includes over a million deaths in China, over half a million in India, almost 200,000 in Europe, and over 50,000 in the United States *(McGill University 2021)*.
+
+### Analytics to the rescue
+
+Like any other data-driven decision making problem, we can tackle the challenges of air quality using advanced analytics. Business analytics can provide practical insights and aid in the decision-making of strategic decisions concerning air quality and its corresponding health-related issues.
+
+To do so, in this and the next three assignments, we intend to create a complete visual analytics tool to analyze, monitor, and forecast air quality for San Diego County.
+
+## Assignment 1 — Getting to know the air quality data
+
+### Description
+
+The main goal of this assignment is to put what you learned in the first three weeks of the class into work! In particular, you will load your personalized data (more on that in the [***Loading your data***]{.underline} section) and inspect some quick facts about it. We then quickly jump in to the variable of interest PM2.5 and study the relationship between other pollutants and the PM2.5.
+
+Hereafter, all the assignment descriptions are written in the [**bold font and colored dark orange**]{style="color: darkorange;"}. Read the descriptions carefully, and complete this notebook. Once you are done with the notebook and completed the check boxes at the end, save your `RMarkdown` notebook and submit it on the assignment container on Canvas.
+
+### Libraries and initial settings
+
+[**Include all the required libraries. Be sure to include a brief comment on the purpose of the included library similar to the example below for `tidyverse`. DO NOT include a library that you are not using in the notebook.**]{style="color: darkorange;"}
+
+```{r}
+library(tidyverse)      # a set of packages for data transformation and visualization
+library(here)
+library(dplyr) # I am using this library count the number of NA values in a column as well as finding the mean and average deviation
+library(ggplot2) # I am using this library to help me plot the differences between PM2.
+
+install.packages("here")
+```
+
+[**Assign your first name to the object `first_name` below. Unless your name is majid; in that case: ~~cool name~~ do not change it.**]{style="color: darkorange;"}
+
+```{r}
+first_name <- 'riyasha'
+```
+
+### Loading your data
+
+[**The data you'll be using is a subset of the general data in `data/air_quality_data.csv` data. To access your randomized subset, use your nine digit [student id]{.underline} as your `unique_identifier`.**]{style="color: darkorange;"}
+
+[**Below is an example of a made-up id, that you can change (by changing the `unique_identifier` to access your own data.**]{style="color: darkorange;"}
+
+```{r}
+unique_identifier <- '200638768'
+```
+
+[**After modifying your `unique_identifier` above, DO NOT change the code in the chunk below. If you have accidentally changed this content, go back to the assignment page on Canvas to re-download the file and access your personalized data correctly.**]{style="color: darkorange;"}
+
+```{r}
+# after setting your identifier in the above line, do not change/edit the next six lines
+set.seed(unique_identifier)
+
+eval({
+  call("<-",
+       as.name(as.name(paste0('aq_data_', first_name))),
+       read_csv(here('data','air_quality_data.csv')) %>%
+         mutate(date = as.Date(date, "%m/%d/%y")) %>% 
+         filter(date < as.Date(max(date)) - round(runif(1, 50, 149),0)))
+})
+```
+
+### Exploring San Diego air quality data
+
+[**Past this point, you can access the underlying data you need using the object `aq_data_<your_first_name>`.For example, I (Majid) can access my data by using the name `aq_data_majid`. The rest of this instruction uses this name, but you should be working with your own data `aq_data_<your_first_name>`.**]{style="color: darkorange;"}
+
+[**To explore the San Diego air quality data, we first need some statistical summaries.**]{style="color: darkorange;"}
+
+#### Question 1: Counting the `NA` values
+
+-   [**Your data set includes nine columns, and there are missing data, which are marked by `NA`. Write a code that displays how many `NA`s are in each column.**]{style="color: darkorange;"}
+
+```{r}
+# Count NA values in each column of aq_data_riyasha
+aq_data_riyasha %>%
+  summarise(across(everything(), ~ sum(is.na(.))))
+
+```
+
+```         
+```
+
+```         
+```
+
+-   [**Write a brief sentence or two about your finding about the number of `NA`s in each variable.**]{style="color: darkorange;"}
+
+    \- From the data, it shows that the number of NA missing data differs from each column with TSP having the highest missing data 2586.
+
+#### Question 2: Statistical properties of `PM2.5`
+
+-   [**As we mentioned in the description, `PM2.5` is our primary variable of interest. Find the general statistics — average, standard deviation, — of this variable.**]{style="color: darkorange;"}
+
+```{r}
+mean(aq_data_riyasha$PM2.5, na.rm = TRUE)
+sd(aq_data_riyasha$PM2.5, na.rm = TRUE)
+```
+
+-   [**Write a brief sentence or two about your finding about the general statistics of `PM2.5`.**]{style="color: darkorange;"}
+
+\- From the general statistics we found for PM2.5, the avaerage mean is 7.43 with a standard deviation of 3.759 which shows a fair amount of variation in the data provided.
+
+### Visualizing Data
+
+#### Question 3: Pollutants' relationship
+
+-   [**Let's visualize the relationship between `PM2.5` and other pollutants. Create SIX scatter plot along with their corresponding linear trend to visualize the relationship between the other six pollutant (`TSP`, `CM`, `SD`, `NO2`, `OZ`, and `PM10`) and `PM2.5`.**]{style="color: darkorange;"}
+
+-   [**After plotting each visualization, include a sentence or two describing the relationship you observe.**]{style="color: darkorange;"}
+
+**PM2.5 vs TSP :** The scatter plot for PM2.5 vs TSP does not display any data point because of missing values. So, it does not show any relationship between the two variables in this plot.
+
+**PM2.5 vs CM:** The scatter plot shows the relationship between PM2.5 and CM, the data points are scattered around the regression line. It also shows as CM increases the PM2.5 level slightly increases but the relationship is not as strong.
+
+**PM2.5 vs SD:** The scatter plot shows a moderate psotive correlation between PM2.5 and SD. This plot shows to be stronger compared to the variable CM.
+
+**PM2.5 vs N02:** In this scatter plot, data points are clustered towered the lower end of N02 axis with some of them increasing as NO2 increases. The relationship shows significant variability in the data.
+
+**PM2.5 vs OZ:** In this scatter plot are densely clustered in the middle of the OZ with some spread around showing slightly positive relationship.
+
+**PM2.5 vs PM10:** In this scatter plot it shows a strong positive relationship this can be seen by the steep slope of the regression line. As PM10 levels increases the PM2.5 also increases and shows that both are strongly associated and correlation with each other.
+
+```{r}
+P <- ggplot(data = aq_data_riyasha, 
+		        mapping = aes(x = TSP, 
+				                  y = PM2.5))
+				
+P + geom_point() + geom_smooth(method = "lm")
+
+P <- P + geom_point() + geom_smooth(method = "lm") + 
+    labs(title = paste("PM2.5 vs", "TSP"),
+         x = "TSP",
+         y = "PM2.5")
+
+print(P)
+```
+
+```{r}
+P <- ggplot(data = aq_data_riyasha, 
+		        mapping = aes(x = CM, 
+				                  y = PM2.5))
+				
+P + geom_point() + geom_smooth(method = "lm")
+
+P <- P + geom_point() + geom_smooth(method = "lm") + 
+    labs(title = paste("PM2.5 vs", "CM"),
+         x = "CM",
+         y = "PM2.5")
+
+print(P)
+
+```
+
+```{r}
+P <- ggplot(data = aq_data_riyasha, 
+		        mapping = aes(x = SD, 
+				                  y = PM2.5))
+				
+P + geom_point() + geom_smooth(method = "lm")
+
+P <- P + geom_point() + geom_smooth(method = "lm") + 
+    labs(title = paste("PM2.5 vs", "SD"),
+         x = "SD",
+         y = "PM2.5")
+
+print(P)
+```
+
+```{r}
+P <- ggplot(data = aq_data_riyasha, 
+		        mapping = aes(x = NO2, 
+				                  y = PM2.5))
+				
+P + geom_point() + geom_smooth(method = "lm")
+
+P <- P + geom_point() + geom_smooth(method = "lm") + 
+    labs(title = paste("PM2.5 vs", "NO2"),
+         x = "NO2",
+         y = "PM2.5")
+
+print(P)
+```
+
+```{r}
+P <- ggplot(data = aq_data_riyasha, 
+		        mapping = aes(x = OZ, 
+				                  y = PM2.5))
+				
+P + geom_point() + geom_smooth(method = "lm")
+
+P <- P + geom_point() + geom_smooth(method = "lm") + 
+    labs(title = paste("PM2.5 vs", "OZ"),
+         x = "OZ",
+         y = "PM2.5")
+
+print(P)
+```
+
+```{r}
+P <- ggplot(data = aq_data_riyasha, 
+		        mapping = aes(x = PM10, 
+				                  y = PM2.5))
+				
+P + geom_point() + geom_smooth(method = "lm")
+
+P <- P + geom_point() + geom_smooth(method = "lm") + 
+    labs(title = paste("PM2.5 vs", "PM10"),
+         x = "PM10",
+         y = "PM2.5")
+
+print(P)
+```
+
+## References
+
+[**Last but not least, in addition to the references below, include any references you used.**]{style="color: darkorange;"}
+
+-   Ritchie, H., & Roser, M. (2019). Outdoor air pollution. *Our world in data*., <https://ourworldindata.org/air-pollution>
+
+-   McGill University (2021) Air pollution: The silent killer called PM2.5. *Phys dot Org*, <https://phys.org/news/2021-03-air-pollution-silent-killer-pm25.html>
+
+-   Bobbitt, Zach. “R: Count Number of NA Values in Each Column.” *Statology*, 15 Nov. 2022, www.statology.org/r-count-na-in-each-column/. Accessed 12 Sept. 2024.
+
+-   When prompted with “Why is my plot not being generated in R” the ChatGPT-generated text indicated "For `ggplot2` plots, you can use `print()` explicitly if you're not in an interactive environment"
+
+    `library(ggplot2) p <- ggplot(data, aes(x, y)) + geom_point() print(p)`
+
+    **(OpenAI, 2023)**.**OpenAI. (2025). *ChatGPT*. [Large language model]. <https://chat.openai.com/chat>**
+
+-   Bobbitt, Zach. “How to Calculate Standard Deviation of Columns in R.” *Statology*, 12 Aug. 2021, www.statology.org/standard-deviation-of-columns-in-r/. Accessed 12 Sept. 2024.
+
+## Check list
+
+-   [x] Did you include your student id (in the `unique_identifier`) and first name (in the `first_name`) to access and use your personalized data throughout the assignment?
+-   [x] Did you answered all the questions and included the required commentary on the corresponding questions?
+-   [x] Do all the code chunks in your file run without any errors.
+-   [x] Do all the code chunks in your file run if your project is opened on another location or another computer. (*Hint:* did you incorporate the package `here`?)
+-   [x] Did you include all the references to forums, prompts, or other sources you may have used?
+
+## Rubrics
+
+Here is how your assignment is graded:
+
+| Criteria                                                                                   | Grading/penalty                                     |
+|---------------------------------------------|---------------------------|
+| Assignment set-up (libraries, first_name, unique_identifier, personalized data)            | If done [**incorrectly**]{.underline}, 25% penalty. |
+| All the code chunks run when the project is opened on another location or another computer | 10%                                                 |
+| Question 1                                                                                 | 10%                                                 |
+| Question 2                                                                                 | 15%                                                 |
+| Question 3                                                                                 | 60%                                                 |
+| Complete references                                                                        | 5%                                                  |
+
+: Assignment 1 Rubric
