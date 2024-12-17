@@ -1,0 +1,311 @@
+---
+title: "Assignment 3"
+output: html_notebook
+---
+
+# Air Quality
+
+Air pollution is one of the world's largest health and environmental challenges. Air pollution expands in two contexts: indoor (household) air pollution and outdoor air pollution.
+
+Air pollution is often defined as the combination of outdoor and indoor particulate matter and ozone. It is a risk factor for many of the leading causes of death, including heart disease, stroke, lower respiratory infections, lung cancer, diabetes, and chronic obstructive pulmonary disease (COPD) *(Ritchie and Roser 2019)*.
+
+![From <https://ourworldindata.org/air-pollution>](images/ourworldindata_air_pollution_overview.png)
+
+Unfortunately, over half of the world's population lives without the protection of adequate air quality standards.
+
+Here at home, the air quality outdoors has gotten better since the 1990s, but there are still numerous challenges in safeguarding Americans from air quality issues.
+
+The U.S. Environmental Protection Agency (EPA) regulates six pollutants as “criteria” air pollutants using human health-based and environmentally-based criteria.
+
+-   ground-level ozone (OZ)
+
+-   particle pollution (PM2.5 and PM10)
+
+-   carbon monoxide (CM)
+
+-   lead total suspended particulate (TSP)
+
+-   nitrogen oxides (NO2)
+
+-   sulfur dioxide (SD)
+
+### PM2.5 the invisible killer
+
+Among all air pollutants, PM2.5 kills the most people worldwide. It consists of particles smaller than 2.5 microns — small enough that billions of PM2.5 can fit inside a single red blood cell. PM2.5 is responsible for an estimated 4.2 million premature deaths every year globally. This includes over a million deaths in China, over half a million in India, almost 200,000 in Europe, and over 50,000 in the United States *(McGill University 2021)*.
+
+### Analytics to the rescue
+
+Like any other data-driven decision making problem, we can tackle the challenges of air quality using advanced analytics. Business analytics can provide practical insights and aid in the decision-making of strategic decisions concerning air quality and its corresponding health-related issues.
+
+To do so, we intend to create a complete visual analytics tool to analyze, monitor, and forecast air quality for San Diego County.
+
+## Assignment 3 — Refined correlation analysis and geographical representation of the data
+
+In Assignments 1 and 2, we familiarized ourselves with the data features, identified issues we must be aware of, and created two summary visualizations in the correlation matrix and and a column chart representation of PM2.5 safety relative to the WHO's recommendation.
+
+### Description
+
+In this assignment, we plan to further refine our correlation matrix and prepare a geographical representation of the data.
+
+Hereafter, all the assignment descriptions are written in [**bold font and colored dark orange**]{style="color: darkorange;"}. Read the descriptions carefully, and complete this notebook. Once you are done with the notebook and have completed the check boxes at the end, save all your files and the project and *zip/compress* your entire R Studio project (the folder with the *Assignment 3.Rproj*, *assignment_3.Rmd*, and the subfolders of *data* and *images*) and submit your assignment on Canvas.
+
+To improve your assignment's presentation, feel free to delete any of the instructions right before finalizing your submission.
+
+### Libraries and initial settings
+
+```{r}
+library(tidyverse)  # A set of packages for data transformation and visualization
+
+library(here) # Easily manage file path in the project
+
+library(viridis)    # For color palette
+
+library(ggcorrplot) # For creating correlation matrix
+
+```
+
+### Loading your data
+
+[**Assign your first name to the object `first_name` and use your nine digit [student id]{.underline} as your `unique_identifier`.**]{style="color: darkorange;"}
+
+```{r}
+first_name <- 'Riyasha'
+unique_identifier <- '200638768'
+```
+
+[**After modifying your `first_name` and `unique_identifier` above, DO NOT change the code in the chunk below. If you have accidentally changed this content, go back to the assignment page on Canvas to re-download the file and access your personalized data correctly.**]{style="color: darkorange;"}
+
+```{r}
+# after setting your identifier in the above line, do not change/edit the next six lines
+set.seed(unique_identifier)
+
+eval({
+  call("<-",
+       as.name(as.name(paste0('aq_data_', first_name))),
+       read_csv(here('data','air_quality_data.csv')) %>%
+         mutate(date = as.Date(date, "%m/%d/%y")) %>% 
+         filter(date < as.Date(max(date)) - round(runif(1, 50, 149),0)))
+})
+```
+
+[**Past this point, you can access the underlying data you need using the object `aq_data_<your_first_name>`.For example, I (Majid) can access my data by using the name `aq_data_majid`. The rest of this instruction uses this name, but you should be working with your own data `aq_data_<your_first_name>`.**]{style="color: darkorange;"}
+
+#### Question 1: Correlation heatmap/matrix
+
+-   [**In Assignment 2, we created a correlation heatmap of the correlation between the six pollutants of `CM`, `SD`, `NO2`, `OZ`, `PM10`, and `PM2.5`. Even though this visualization displays the correlations using different color scales, it will be helpful to know the exact correlations numerically.**]{style="color: darkorange;"}
+
+-   [**Write a code to create the correlation heatmap of Assignment 2 (with all the specified requirements in Assignment 2), with the additional requirement to display the numerical correlation coefficients (one for each tile) on the plot itself and use an appropriate theme.**]{style="color: darkorange;"}
+
+#Selecting the interested pollutants (excluding TSP)
+
+```{r}
+pollutants <- aq_data_Riyasha %>%
+  select(CM,SD, NO2, OZ, PM10, PM2.5)
+```
+
+#Calculating the correlation matrix and ignoring the rows with missing values
+
+```{r}
+cor_matrix <- cor(na.omit(pollutants))
+```
+
+#Creating the correlation heat map
+
+```{r}
+p <- ggcorrplot(cor_matrix, 
+                lab = TRUE,  
+                colors = viridis(5),  
+                title = "Correlation Heatmap of Pollutants",
+                legend.title = "Correlation") +
+                labs(x = "Pollutants",
+                     y = "Pollutants",  
+    caption = "Source: RAQSAPI package — US EPA Air Quality System Data Mart API")  
+p
+
+
+```
+
+-   [**Based on this heatmap, and when attempting to use the correlation between other pollutants to predict `PM2.5`, which variable(s) should we prioritize?**]{style="color: darkorange;"}
+
+-   From the correlation heat map above, we can see that when predicting PM2.5, PM 10 should be the priority because of its strong correlation of 0.87 compared to the other pollutants. Other pollutants such as SD, NO2 and OZ show a weaker relationship with PM2.5 and would be less useful for prediction.
+
+#### Question 2: Geographical visualization of the Air Quality data
+
+-   [**In class, we exclusively used the `geom_polygon` to create geographical visualizations. Using `geom_polygon` is straightforward so long as the data is presented as a collection of latitude and longitude data. This geom, however, has multiple shortcomings when working with various features of spatial data. Fortunately, `ggplot2` has another geom that is specially built for spatial data and can handle almost any spatial transformation. This geom is called `geom_sf` (sf stands for simple features) and is related to the `sf` package. Below, I created a very simple (and unrefined) visualization of San Diego County's map, differentiating by zip codes. Go ahead and run it to see the map.**]{style="color: darkorange;"}
+
+```{r}
+sand_diego_map_data <- readRDS(here('data', 'sd_map_data.rds')) # notice the new dataset, sd_map_data.rds, in the data folder
+
+sand_diego_map_data %>% 
+  ggplot() +
+  geom_sf()
+```
+
+-   [**Air quality data collected from different sensors is often displayed as bubbles on a map with specific measurements. Here is, for example, an illustration of a suitable plot.**]{style="color: darkorange;"}
+
+![From <https://purpleair.com>](images/illustrative_air_quality_visualization.png)
+
+[**The underlying data of this visualization (in the screenshot above) is collected from residential sensors, which is why there are many points available. Please note that our data does not include this many sensors (sites).**]{style="color: darkorange;"}
+
+[**In this question, we would like to visualize a summary of air quality (`PM2.5`) for each air quality site on the map of Sand Diego County. Write an R code to create a chart with the following specifications:**]{style="color: darkorange;"}
+
+-   [**Display the monthly average `PM2.5` for a specific month. (Hint: First, notice that your air quality data currently does not have a `month` variable. Second, to streamline your code, you should define a fixed name, say `selected_month`, that includes the selected month. For example, if we aim to filter our data for the month of January, we can set `selected_month <- 1` and use `selected_month` in the filter/subset function.)**]{style="color: darkorange;"}
+
+#Selecting specific month: For example, January
+
+```{r}
+selected_month <- 1
+```
+
+#Adding the "month" column in the data, filtering data for the selected month and then grouping it by sites along with finding the average PM2.5
+
+```{r}
+monthly_avg_pm2_5 <- aq_data_Riyasha %>%
+  mutate(month = as.integer(format(date, "%m"))) %>% 
+  filter(month == selected_month) %>% 
+  group_by(site_number) %>%
+  summarize(avg_pm2_5 = mean(PM2.5, na.rm = TRUE))
+
+monthly_avg_pm2_5
+
+```
+
+[**The monthly average `PM2.5` is broken down by site. (Hint: You should use the `site_data.csv` (which includes each site's latitude and longitude coordinates) from the data folder to join your air quality data with the site information. Remember you can load a csv file using the `read_csv` function.)**]{style="color: darkorange;"}
+
+#Loading the site data
+
+```{r}
+site_data <- read_csv("data/site_data.csv")
+```
+
+#Merging the two data
+
+```{r}
+merged_data <- monthly_avg_pm2_5 %>%
+  left_join(site_data, by = "site_number")
+
+ head(merged_data)
+
+```
+
+[**Each site is represented by a large enough bubble colored based on the average `PM2.5` value. The resulting color legend should use an appropriate color palette. (Hint: First, remember you can provide different datasets for different geoms. For example, you can provide the `sand_diego_map_data` in the `geom_sf` function and use air quality data for `geom_point`. Second, think about what different values of average `PM2.5` represent, and the most appropriate color scheme for such values.)**]{style="color: darkorange;"}
+
+-   [**The actual numerical monthly average `PM2.5` values should be displayed on the bubbles. (Hint: This can be achieved using the `geom_text` function.)**]{style="color: darkorange;"}
+
+-   [**Your final plot must include appropriate title, theme, caption, and legends.**]{style="color: darkorange;"}
+
+#Loading the SD map data
+
+```{r}
+sd_map_data <- readRDS("data/sd_map_data.rds")
+
+```
+
+```{r}
+
+p <- ggplot() +
+  geom_sf(data = sd_map_data, fill = "#e3e1e1", color = "#4d4b4b")  
+
+p1 <- p + 
+  geom_point(data = na.omit(merged_data),
+             aes(x = longitude, 
+                 y = latitude, 
+                 color = avg_pm2_5),
+                 size = 10) +
+  
+  geom_text(data = na.omit(merged_data), 
+            aes(x = longitude, 
+                y = latitude, 
+                label = round(avg_pm2_5, 1)),
+               color = "#dbdbd5",
+               size = 4,
+               vjust = 0.5,
+               hjust = 0.5,
+               fontface = "bold") +
+  
+
+  scale_color_viridis_c(option = "C", name = "Average PM2.5 (µg/m³)") + 
+  
+  labs(title = paste("PM2.5 Levels in San Diego County for the month of", month.name[selected_month]),
+       color = "PM2.5 (µg/m³)", 
+       caption = "Source: RAQSAPI - Air Quality Data") +
+  
+theme( plot.title = element_text(hjust = 0.5),
+       legend.position = "right") +
+  
+guides(color = guide_colorbar(title.vjust = 5,
+                                title.hjust = 0.5))
+
+
+print(p1)
+
+
+
+```
+
+-   [**What can you conclude from this chart? Are there any particular sites and months of the year that should be highlighted? Is geographical representation the best way to display such trends? Please elaborate.**]{style="color: darkorange;"}
+
+    From the chart, we can see that the PM2.5 levels vary across different sites in San Diego. Some sites in the south have higher PM2.5 levels, such as 10.7, whereas the southeast site has a lower average level of 2.4. This highlights how pollution can differ between neighboring areas, likely influenced by industrial activities and seasonal factors. The geographical representation effectively shows areas that may need more attention. However, it is important to continue monitoring and examining PM2.5 levels across different months and even years to better understand long term air quality trends.
+
+```         
+```
+
+## References
+
+[**Last but not least, in addition to the references below, include any references you used.**]{style="color: darkorange;"}
+
+-   Ritchie, H., & Roser, M. (2019). Outdoor air pollution. *Our world in data*., <https://ourworldindata.org/air-pollution>
+
+-   McGill University (2021) Air pollution: The silent killer called PM2.5. *Phys dot Org*, <https://phys.org/news/2021-03-air-pollution-silent-killer-pm25.html>
+
+-   RAQSAPI: A Simple Interface to the US EPA Air Quality System Data Mart API <https://cran.r-project.org/web/packages/RAQSAPI/index.html>
+
+-   WHO (2021). What are the WHO Air quality guidelines? <https://www.who.int/news-room/feature-stories/detail/what-are-the-who-air-quality-guidelines>
+
+-   Purple (2024). Air quality data for everyone <https://www.purpleair.com>
+
+-   Pebesma, E., & Bivand, R. (2023). Spatial Data Science: With Applications in R. Chapman and Hall/CRC. <https://doi.org/10.1201/9780429459016> <https://r-spatial.github.io/sf/>
+
+-   United States Census Bureau (2024). Geography Program. <https://www.census.gov/programs-surveys/geography.html>
+
+-   Wickham, H. , Navarro, D., and Pedersen T. (2024) *ggplot2: Elegant Graphics for Data Analysis* (3rd Edition), Chapter 6: Maps. <https://ggplot2-book.org/maps>
+
+-   When searching for "How to extract month from date in R" in google, Statology gives various ways to do it. Statology. (2022). How to Extract Month from Date in R (With Examples). Statology. <https://www.statology.org/extract-month-from-date-in-r/>
+
+-   When searching for "How to left join data in R" FavTutor. (2023). Left Join in R: How to Use Left Join in R. FavTutor. <https://favtutor.com/blogs/left-join-r>
+
+-   When searching "how to round in R" Stack Overflow user [*markus*](https://stackoverflow.com/users/6574038/markus) (2018). "R ggplot geom_text to round labels within the label command." Retrieved from <https://stackoverflow.com/questions/50258646/r-ggplot-geom-text-to-round-labels-within-the-label-command>
+
+-   When prompted with "how do i dynamically change month names in title label in R?" the ChatGPT generated text said : **Use `month.name[]`**: R has a built-in vector called **`month.name`** that contains all the month names in order, from "January" to "December". You can index this vector using a number to get the corresponding month.
+
+    **Use `paste()` or `sprintf()`**: These functions allow you to concatenate strings and variables dynamically.
+
+    -   **`paste()`** joins strings together.
+
+    -   **`sprintf()`** allows more complex formatting.
+
+    **OpenAI. (2024). *ChatGPT* ( [Large language model]. <https://chat.openai.com/chat>**
+
+### 
+
+## Check list
+
+-   [x] Did you include your student id (in the `unique_identifier`) and first name (in the `first_name`) to access and use your personalized data throughout the assignment?
+-   [x] Did you answered all the questions and included the required commentary on the corresponding questions?
+-   [x] Do all the code chunks in your file run without any errors.
+-   [x] Do all the code chunks in your file run if your project is opened on another location or another computer. (*Hint:* did you incorporate the package `here`?)
+-   [x] Did you include all the references to forums, prompts, or other sources you may have used?
+
+## Rubrics
+
+Here is how your assignment is graded:
+
+| Criteria                                                                                   | Grading/penalty                                     |
+|---------------------------------------------|---------------------------|
+| Assignment set-up (libraries, first_name, unique_identifier, personalized data)            | If done [**incorrectly**]{.underline}, 25% penalty. |
+| All the code chunks run when the project is opened on another location or another computer | 10%                                                 |
+| Question 1                                                                                 | 20%                                                 |
+| Question 2                                                                                 | 65%                                                 |
+| Complete references                                                                        | 5%                                                  |
+
+: Assignment 3 Rubric
