@@ -84,21 +84,24 @@ A relational schema was created connecting the three datasets to analyze and dis
 
 ### Report Structure
 
-#### 1. Overview Page
-This page provides a geographical view of PM2.5 levels in various locations across San Diego County.
+### Overview Page
+This page shows a geographical view of average PM2.5 values per site.
 
-![Overview Page](visualization/Jan_pm2_5.png)
+![Overview Page](visualization/overview_page1.png)
 
 ---
-### 2. Trend Analysis Page
-The Trend Analysis page displays the trends of different pollutants over time, with slicers for site and pollutant.
 
-![Trend Analysis Page](visualization/Trend_analysis.png)
+### Trend Analysis Page
+This page displays trends of different pollutants over time with slicers for site and pollutant selection.
 
-### 3. Data, Terms, and Definitions
+![Trend Analysis Page](visualization/trend_analysis_page1.png)
+
+---
+
+### Data Terms Page
 This page provides definitions of key terms, data sources, and additional insights.
 
-![Data Terms Page](visualization/data_terms_definitions.png)
+![Data Terms Page](visualization/data_terms_page1.png)
 
 
 ### Submission Notes
