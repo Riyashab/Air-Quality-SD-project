@@ -56,6 +56,20 @@ The map below shows the average PM2.5 levels in San Diego County for the month o
 
 ## Power BI Analysis
 
+## Power BI Analysis Report
+
+To interact with the full Power BI report, including all visualizations (Overview, Trend Analysis, and Data, Terms, and Definitions), access the link below:
+
+🔗 [View Power BI Report](https://app.powerbi.com/groups/me/reports/8a39a24d-9fc8-439b-aec2-36dec56f8f3f/d4a46f8ecfad3e74caef?experience=power-bi)
+
+---
+
+### Key Pages in the Report:
+1. **Overview Page**: Geographical distribution of PM2.5 values.
+2. **Trend Analysis Page**: Pollutant trends over time with filtering capabilities.
+3. **Data, Terms, and Definitions**: Glossary, data sources, and report notes.
+
+
 To prepare our Microsoft Power BI report, we engaged in all steps of ETL, data modeling, and data visualization.
 
 ### ETL Process
@@ -77,17 +91,18 @@ This page provides a geographical view of PM2.5 levels in various locations acro
 
 ---
 
-#### 2. Trend Analysis Page
-The Trend Analysis page displays the trends of different pollutants over time, with slicers for site and pollutant selection.
+### 2. Trend Analysis Page
+The Trend Analysis page displays the trends of different pollutants over time, with slicers for site and pollutant.
 
-![Trend Analysis Page](visualization/Trend%20analysis.pdf)
+![Trend Analysis Page](visualization/Trend%20analysis.png)
+
 
 ---
 
-#### 3. Data, Terms, and Definitions
+### 3. Data, Terms, and Definitions
 This page provides definitions of key terms, data sources, and additional insights.
 
-![Data Terms Page](visualization/data,term,definitions.pdf)
+![Data Terms Page](visualization/data,term,definitions.png)
 
 ---
 
