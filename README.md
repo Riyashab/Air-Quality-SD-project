@@ -41,12 +41,11 @@ This project creates a **visual analytics tool** to analyze, monitor, and foreca
 |-------------|------------|---------------|
 | ![PM2.5 vs OZ](visualization/pm%202.5%20vs%20OZ.png) | ![PM2.5 vs SD](visualization/pm%202.5%20vs%20SD.png) | ![Overall PM2.5](visualization/pm%202.5.png) |
 
-
 ## PM2.5 Analysis
 
 <p align="center">
-  <img src="visualization/correlation%20heatmap%20pollutant.png" alt="Correlation Heatmap" width="45%"/>
-  <img src="visualization/pm25_vs_safeunsafe.png" alt="Safe and Unsafe PM2.5" width="45%"/>
+  <img src="visualization/correlation%20heatmap%20pollutant.png" alt="Correlation Heatmap" width="50%"/>
+  <img src="visualization/pm25_vs_safeunsafe.png" alt="Safe and Unsafe PM2.5" width="50%"/>
 </p>
 
 
