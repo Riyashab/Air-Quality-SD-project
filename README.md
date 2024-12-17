@@ -54,6 +54,46 @@ The map below shows the average PM2.5 levels in San Diego County for the month o
 
 ![PM2.5 Levels in January](visualization/Jan_pm2_5.png)
 
+## Power BI Analysis
+
+To prepare our Microsoft Power BI report, we engaged in all steps of ETL, data modeling, and data visualization.
+
+### ETL Process
+1. **Extract**: Air Quality and Site Data were extracted over three years and saved in stable folders.
+2. **Transform**: The datasets were cleaned and transformed to ensure 0% errors, including creating an unpivoted version of the Air Quality data.
+3. **Load**: Finalized datasets (`Air Quality`, `Site Data`, `Air Quality Unpivoted`) were loaded for analysis.
+
+### Data Modeling
+A relational schema was created connecting the three datasets to analyze and display the results effectively.
+
+---
+
+### Report Structure
+
+#### 1. Overview Page
+This page provides a geographical view of PM2.5 levels in various locations across San Diego County.
+
+![Overview Page](visualization/Jan_pm2_5.png)
+
+---
+
+#### 2. Trend Analysis Page
+The Trend Analysis page displays the trends of different pollutants over time, with slicers for site and pollutant selection.
+
+![Trend Analysis Page](visualization/Trend%20analysis.pdf)
+
+---
+
+#### 3. Data, Terms, and Definitions
+This page provides definitions of key terms, data sources, and additional insights.
+
+![Data Terms Page](visualization/data,term,definitions.pdf)
+
+---
+
+### Submission Notes
+- All pages include interactivity, slicers, custom tooltips, and navigation buttons.
+- Visualizations include geographical maps, line charts with forecasts, and card visuals.
 
 
 
