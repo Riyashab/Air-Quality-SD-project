@@ -5,7 +5,7 @@ Air pollution is one of the world's largest health and environmental challenges.
 
 Air pollution is often defined as the combination of outdoor and indoor particulate matter and ozone. It is a risk factor for many of the leading causes of death, including heart disease, stroke, lower respiratory infections, lung cancer, diabetes, and chronic obstructive pulmonary disease (COPD) *(Ritchie and Roser 2019)*.  
 
-![From <https://ourworldindata.org/air-pollution>](images/ourworldindata_air_pollution_overview.png)  
+![Death by Factor](visualization/death%20by%20factor.png)
 
 Unfortunately, over half of the world's population lives without the protection of adequate air quality standards.  
 
@@ -47,11 +47,7 @@ The heatmap below illustrates the correlation between various pollutants.
 
 ![Correlation Heatmap](visualization/correlation%20heatmap%20pollutant.png)
 
-## Death by Factor
 
-This visualization represents the impact of various factors on death rates.
-
-![Death by Factor](visualization/death%20by%20factor.png)
 
 
 
