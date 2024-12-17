@@ -90,21 +90,16 @@ This page provides a geographical view of PM2.5 levels in various locations acro
 ![Overview Page](visualization/Jan_pm2_5.png)
 
 ---
-
 ### 2. Trend Analysis Page
 The Trend Analysis page displays the trends of different pollutants over time, with slicers for site and pollutant.
 
-![Trend Analysis Page](visualization/Trend%20analysis.png)
-
-
----
+![Trend Analysis Page](visualization/Trend_analysis.png)
 
 ### 3. Data, Terms, and Definitions
 This page provides definitions of key terms, data sources, and additional insights.
 
-![Data Terms Page](visualization/data,term,definitions.png)
+![Data Terms Page](visualization/data_terms_definitions.png)
 
----
 
 ### Submission Notes
 - All pages include interactivity, slicers, custom tooltips, and navigation buttons.
