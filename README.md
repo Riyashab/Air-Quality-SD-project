@@ -92,14 +92,24 @@ This page shows a geographical view of average PM2.5 values per site.
 ---
 
 ### Trend Analysis Page
-This page displays trends of different pollutants over time with slicers for site and pollutant selection.
+The Trend Analysis page displays time-series trends of different pollutants with options to filter by site and pollutant type.
+
+Features:
+Slicers for site selection and pollutant selection.
+A 12-month forecast line to predict future PM2.5 trends.
+Key Insight: Users can observe pollutant behavior over time and identify patterns.
+
 
 ![Trend Analysis Page](visualization/trend_analysis.png)
 
 ---
 
 ### Data Terms Page
-This page provides definitions of key terms, data sources, and additional insights.
+This page provides the following:
+
+Definitions of key terms (e.g., PM2.5, CM, NO2, OZ).
+Data Sources used for the analysis.
+Contact Information for further questions.
 
 ![Data Terms Page](visualization/data_and_terms.png)
 
