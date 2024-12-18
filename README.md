@@ -102,3 +102,7 @@ This page displays trends of different pollutants over time with slicers for sit
 This page provides definitions of key terms, data sources, and additional insights.
 
 ![Data Terms Page](visualization/data_and_terms.png)
+
+### Notes
+- All pages include interactivity, slicers, custom tooltips, and navigation buttons.
+- Visualizations include geographical maps, line charts with forecasts, and card visuals.
