@@ -87,21 +87,21 @@ A relational schema was created connecting the three datasets to analyze and dis
 ### Overview Page
 This page shows a geographical view of average PM2.5 values per site.
 
-![Overview Page](overview.png)
+![Overview Page](overview_page.png)
 
 ---
 
 ### Trend Analysis Page
 This page displays trends of different pollutants over time with slicers for site and pollutant selection.
 
-![Trend Analysis Page](trend%20analysis.png)
+![Trend Analysis Page](trend_analysis.png)
 
 ---
 
 ### Data Terms Page
 This page provides definitions of key terms, data sources, and additional insights.
 
-![Data Terms Page](data%20and%20terms.png)
+![Data Terms Page](data_and_terms.png)
 
 ---
 
