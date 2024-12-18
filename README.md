@@ -108,4 +108,3 @@ This page provides definitions of key terms, data sources, and additional insigh
 ### Submission Notes
 - All pages include interactivity, slicers, custom tooltips, and navigation buttons.
 - Visualizations include geographical maps, line charts with forecasts, and card visuals.
-
